@@ -18,5 +18,11 @@ namespace HitCounter
             Clients.All.onRecordHit(_hitCount);
         }
 
+        public override System.Threading.Tasks.Task OnDisconnected(bool stopCalled)
+        {
+           _hitCount -= 1;
+           Clients.All.onRecordHit(_hitCount);
+           return base.OnDisconnected(stopCalled);
+        }
     }
 }
