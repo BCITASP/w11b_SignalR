@@ -2,8 +2,27 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title></title>
+    <script src="Scripts/jquery-1.6.4.min.js"></script>
+    <script src="Scripts/jquery.signalR-2.2.0.min.js"></script>
 </head>
 <body>
+    <div id="hitCountValue">0</div>
+    <script type="text/javascript">
+        $(function () {
+            var connection = $.hubConnection();
+            var hub = connection.createHubProxy("hitCounter");
+
+            //  This function is called from the server
+            hub.on("onRecordHit", function (hitCount) {
+                $("#hitCountValue").text(hitCount);
+            });
+
+            //  The client calls this function on the server
+            connection.start(function () {
+                hub.invoke("recordHit");
+            });
+        })
+    </script>
 
 </body>
 </html>
